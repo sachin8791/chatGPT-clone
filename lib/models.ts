@@ -26,18 +26,20 @@ export class ChatService {
       title,
       createdAt: new Date(),
     };
-    const result = await collection.insertOne(chat as any);
+    const result = await collection.insertOne(chat as unknown as Document);
     return { ...chat, _id: result.insertedId };
   }
 
   static async getChats(): Promise<Chat[]> {
     const collection = await getChatsCollection();
-    return await collection.find({}).sort({ createdAt: -1 }).toArray();
+    const chats = await collection.find({}).sort({ createdAt: -1 }).toArray();
+    return chats as Chat[];
   }
 
   static async getChat(id: string): Promise<Chat | null> {
     const collection = await getChatsCollection();
-    return await collection.findOne({ _id: new ObjectId(id) });
+    const chat = await collection.findOne({ _id: new ObjectId(id) });
+    return chat as Chat | null;
   }
 
   static async deleteChat(id: string): Promise<boolean> {
@@ -73,16 +75,17 @@ export class MessageService {
       content,
       createdAt: new Date(),
     };
-    const result = await collection.insertOne(message as any);
+    const result = await collection.insertOne(message as unknown as Document);
     return { ...message, _id: result.insertedId };
   }
 
   static async getMessages(chatId: string): Promise<Message[]> {
     const collection = await getMessagesCollection();
-    return await collection
+    const messages = await collection
       .find({ chatId: new ObjectId(chatId) })
       .sort({ createdAt: 1 })
       .toArray();
+    return messages as Message[];
   }
 
   static async deleteMessages(chatId: string): Promise<boolean> {
