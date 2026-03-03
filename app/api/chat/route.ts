@@ -16,16 +16,15 @@ export async function POST(request: NextRequest) {
 
     // Check if OpenAI API key is available
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'dummy-key-for-build') {
-      // Return demo response
-      const demoResponse = `This is a demo response. To get actual AI responses, please add your OpenAI API key in Vercel environment variables.
-
-Your message was: "${message}"
-
-To enable full functionality:
-1. Go to Vercel Dashboard → Settings → Environment Variables
-2. Add OPENAI_API_KEY with your actual OpenAI API key
-3. Add MONGODB_URI for chat history (optional)
-4. Redeploy the application`;
+      // Return demo response if API key is not available
+      const responses = [
+        `That's an interesting question! "${message}" - I'd be happy to help you with that. To get real AI responses, you'll need to add an OpenAI API key in Vercel environment variables.`,
+        `I understand you're asking about: "${message}". This is a demo mode. For actual AI-powered conversations, please configure your OpenAI API key in the deployment settings.`,
+        `Great point! Your message was: "${message}". I'm currently in demo mode. Add your OpenAI API key to enable full ChatGPT functionality.`,
+        `Thanks for sharing: "${message}". To get intelligent responses, please set up your OpenAI API key in Vercel dashboard.`,
+      ];
+      
+      const demoResponse = responses[Math.floor(Math.random() * responses.length)];
 
       return new Response(demoResponse, {
         headers: {
