@@ -14,6 +14,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
 
+    // Check if OpenAI API key is available
+    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'dummy-key-for-build') {
+      // Return demo response
+      const demoResponse = `This is a demo response. To get actual AI responses, please add your OpenAI API key in Vercel environment variables.
+
+Your message was: "${message}"
+
+To enable full functionality:
+1. Go to Vercel Dashboard → Settings → Environment Variables
+2. Add OPENAI_API_KEY with your actual OpenAI API key
+3. Add MONGODB_URI for chat history (optional)
+4. Redeploy the application`;
+
+      return new Response(demoResponse, {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      });
+    }
+
     let currentChatId = chatId;
 
     if (!currentChatId) {
