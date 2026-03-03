@@ -1,17 +1,13 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
-}
-
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/chatgpt-clone';
 const options = {};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === 'development') {
-  let globalWithMongo = global as typeof global & {
+  const globalWithMongo = global as typeof global & {
     _mongoClientPromise?: Promise<MongoClient>;
   };
 
