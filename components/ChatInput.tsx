@@ -38,8 +38,8 @@ export default function ChatInput({ onSendMessage, isLoading, disabled }: ChatIn
   return (
     <div className="border-t border-gray-800 bg-gray-900 p-4">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-        <div className="relative flex items-end gap-3">
-          <div className="flex-1 relative">
+        <div className="flex justify-center">
+          <div className="relative w-full max-w-3xl">
             <textarea
               ref={textareaRef}
               value={message}
@@ -47,23 +47,27 @@ export default function ChatInput({ onSendMessage, isLoading, disabled }: ChatIn
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               disabled={disabled}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-3 pr-16 bg-slate-800 border border-gray-700/50 rounded-2xl text-white placeholder-gray-400 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 scrollbar-hide"
               rows={1}
-              style={{ minHeight: '48px', maxHeight: '200px' }}
+              style={{ 
+                minHeight: '56px', 
+                maxHeight: '200px',
+                boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.1)'
+              }}
             />
+            
+            <button
+              type="submit"
+              disabled={!message.trim() || isLoading || disabled}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-slate-700 hover:bg-slate-600 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-full transition-all duration-200 flex items-center justify-center hover:scale-105 active:scale-95"
+            >
+              {isLoading ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Send size={18} className="transform rotate-90" />
+              )}
+            </button>
           </div>
-          
-          <button
-            type="submit"
-            disabled={!message.trim() || isLoading || disabled}
-            className="px-4 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors duration-200 flex items-center justify-center min-w-[48px]"
-          >
-            {isLoading ? (
-              <Loader2 size={20} className="animate-spin" />
-            ) : (
-              <Send size={20} />
-            )}
-          </button>
         </div>
         
         <div className="mt-2 text-center">
