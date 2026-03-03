@@ -3,7 +3,7 @@ import OpenAI from 'openai';
 import { createChat, getChatWithMessages, addMessage } from '@/lib/database';
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'dummy-key-for-build',
 });
 
 export async function POST(request: NextRequest) {
